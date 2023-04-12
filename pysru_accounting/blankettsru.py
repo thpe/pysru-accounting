@@ -9,11 +9,11 @@ class BlankettSRU:
         print('init')
         self.lines = []
         self.upp   = []
-        self.blankett = ''
-        self.postcode = ''
+        self.blktt = ''
+        self.prog = 'PySRU'
 
-    def info(self, info):
-        self.info = info
+    def blankett(self, v):
+        self.blktt = v
 
     def orgnr (self, org):
         self.org = org
@@ -29,11 +29,19 @@ class BlankettSRU:
         self.upp.append(u)
 
     def print(self):
-        print('#BLANKETT '   + self.blankett)
-        print('#IDENTITET '  + self.id)
-        print('#SYSTEMINFO ' + self.info)
+        print(self.generate())
+
+    def generate(self):
+        content = ''.join(['#BLANKETT ',   self.blktt, '\n',
+                           '#IDENTITET ',  self.id,       '\n',
+                           '#SYSTEMINFO ', self.prog,     '\n'])
         for u in self.upp:
-            print('#UPPGIFT ' + u)
-        print('#POSTNR ' + self.postcode)
-        print('#BLANKETTSLUT')
-        print('#FIL_SLUT')
+            content = content + '#UPPGIFT ' + u + '\n'
+        content = content + '#BLANKETTSLUT' + '\n'
+        content = content + '#FIL_SLUT'
+        return content
+
+    def write(self, filename):
+        content = self.generate().encode('iso-8859-1')
+        with open(filename, 'wb') as f:
+            f.write (content)

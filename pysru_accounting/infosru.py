@@ -24,14 +24,24 @@ class InfoSRU:
         self.town = town
 
     def print(self):
-        print('#DATABESKRIVNING_START')
-        print('#PRODUKT SRU')
-        print('#PROGRAM pysru-accounting')
-        print('#FILNAMN ' + self.filename)
-        print('#DATABESKRIVNING_SLUT')
-        print('#MEDIELEV_START')
-        print('#ORGNR '   + self.orgnr)
-        print('#NAMN '    + self.name)
-        print('#POSTNR '  + self.postcode)
-        print('#POSTORT ' + self.town)
-        print('#MEDIELEV_SLUT')
+        print (self.generate())
+
+    def generate(self):
+        string = ''.join([
+                 '#DATABESKRIVNING_START'    , '\n',
+                 '#PRODUKT SRU'              , '\n',
+                 '#PROGRAM pysru-accounting' , '\n',
+                 '#FILNAMN ' , self.filename , '\n',
+                 '#DATABESKRIVNING_SLUT'     , '\n',
+                 '#MEDIELEV_START'           , '\n',
+                 '#ORGNR '   , self.orgnr    , '\n',
+                 '#NAMN '    , self.name     , '\n',
+                 '#POSTNR '  , self.postcode , '\n',
+                 '#POSTORT ' , self.town     , '\n',
+                 '#MEDIELEV_SLUT'            , '\n'])
+        return string
+
+    def write(self, filename):
+        content = self.generate().encode('iso-8859-1')
+        with open(filename, 'wb') as f:
+            f.write (content)
