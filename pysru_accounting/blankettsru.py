@@ -28,6 +28,9 @@ class BlankettSRU:
     def uppgift(self, u):
         self.upp.append(u)
 
+    def uppgift_num(self, sru, val):
+        self.upp.append(str(sru) + ' ' + str(int(val)))
+
     def print(self):
         print(self.generate())
 
