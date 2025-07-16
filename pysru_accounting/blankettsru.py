@@ -6,12 +6,15 @@ from datetime import datetime
 
 class BlankettSRU:
     def __init__(self):
-        print('init')
         self.lines = []
         self.upp   = []
         self.blktt = ''
         self.prog = 'PySRU'
         self.content = ''
+
+        self.aname = ''
+        self.org  = ''
+        self.id   = ''
 
     def blankett(self, v):
         self.blktt = v
@@ -23,8 +26,11 @@ class BlankettSRU:
     def id(self, nr):
         self.id = nr
 
-    def name(self, name):
-        self.name = name
+    def name(self, aname):
+        self.aname = aname
+
+    def clear_uppgift(self):
+        self.upp = []
 
     def uppgift(self, u):
         self.upp.append(u)
@@ -33,15 +39,16 @@ class BlankettSRU:
         self.upp.append(str(sru) + ' ' + str(int(val)))
 
     def print(self):
-        print(self.generate())
+        print(self.content)
 
     def generate(self):
-        self.content = ''.join(['#BLANKETT ',   self.blktt, '\n',
-                           '#IDENTITET ',  self.id,       '\n',
-                           '#SYSTEMINFO ', self.prog,     '\n'])
+        self.content += f'#BLANKETT {self.blktt}\n'
+        self.content += f'#IDENTITET {self.id}\n'
+        self.content += f'#SYSTEMINFO {self.prog}\n'
         for u in self.upp:
             self.content = self.content + '#UPPGIFT ' + u + '\n'
         self.content = self.content + '#BLANKETTSLUT' + '\n'
+        return self.content
 
     def finish_file(self):
         self.content = self.content + '#FIL_SLUT'
