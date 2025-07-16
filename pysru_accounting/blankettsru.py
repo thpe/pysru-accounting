@@ -11,6 +11,7 @@ class BlankettSRU:
         self.upp   = []
         self.blktt = ''
         self.prog = 'PySRU'
+        self.content = ''
 
     def blankett(self, v):
         self.blktt = v
@@ -35,16 +36,18 @@ class BlankettSRU:
         print(self.generate())
 
     def generate(self):
-        content = ''.join(['#BLANKETT ',   self.blktt, '\n',
+        self.content = ''.join(['#BLANKETT ',   self.blktt, '\n',
                            '#IDENTITET ',  self.id,       '\n',
                            '#SYSTEMINFO ', self.prog,     '\n'])
         for u in self.upp:
-            content = content + '#UPPGIFT ' + u + '\n'
-        content = content + '#BLANKETTSLUT' + '\n'
-        content = content + '#FIL_SLUT'
-        return content
+            self.content = self.content + '#UPPGIFT ' + u + '\n'
+        self.content = self.content + '#BLANKETTSLUT' + '\n'
+
+    def finish_file(self):
+        self.content = self.content + '#FIL_SLUT'
+        return self.content
 
     def write(self, filename):
-        content = self.generate().encode('iso-8859-1')
+        self.content = self.finish_file().encode('iso-8859-1')
         with open(filename, 'wb') as f:
-            f.write (content)
+            f.write (self.content)
