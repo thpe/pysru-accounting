@@ -44,7 +44,7 @@ for y in years:
     # add INK2 for that year
     ink2.blankett(f'INK2-{y}P4')
     ink2.orgnr(org)
-    ink2.name('Thomas Petig')
+    ink2.name('Sven Svensson')
     ink2.uppgift_num(7011, str(y)+'0101')
     ink2.uppgift_num(7012, str(y)+'1231')
     ink2.uppgift_num(7114, df.loc[y, '7114']) # 1.2 Underskott
